@@ -1,0 +1,17 @@
+{
+    "name": "vrai-faux",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "webpack --mode development"
+    },
+    "devDependencies": {
+        "webpack": "^4.25.1",
+        "webpack-cli": "^3.1.2"
+    },
+    "dependencies": {
+        "fireworks-canvas": "^2.2.0",
+        "jquery": "^3.3.1",
+        "progressbar.js": "^1.0.1"
+    }
+}
