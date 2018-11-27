@@ -138,53 +138,65 @@ let answerView = () => {
         if (clicked1) return;
         clicked1 = true;
 
-        if (questions[questionIdx].answer == true) {
-            columnTrue.addClass('goodAnswerBackground');
-            headerFalse.addClass('badAnswerHeader');
-        } else {
-            columnFalse.addClass('goodAnswerBackground');
-            headerTrue.addClass('badAnswerHeader');
-        }
-
-        if (questionIdx > 0) {
-            players.forEach((player, name)=> {
-                if (player.answer != questions[questionIdx].answer) {
-                    player.div.addClass('badAnswerPlayer');
-                } else {
-                    player.score++;
-                    if (player.time < 5) {
-                        player.div.addClass('fastAnswerPlayer');
-                        player.score++;
-                    }
-                }
-            });    
-        }
-
-        setTimeout(() => {
-
-            if (questionIdx+1>=questions.length) {
-                nextQuestionDiv.text('Classement final...');
-            } else if (questionIdx == 0) {
-                nextQuestionDiv.text('Première question...');
-            } else {
-                nextQuestionDiv.text('Question suivante: n°'+(questionIdx+1)+'...');
-            }
-            
-            let clicked2 = false;
-
-            nextQuestionDiv.click(()=> {
-                if (clicked2) return;
-                clicked2 = true;
-
-                if (questionIdx+1>=questions.length) {
-                    finalView();
-                } else {
-                    questionView();
-                }
-            });
-        },2000);    
+        displayAnswer(columnTrue,headerTrue,columnFalse,headerFalse,nextQuestionDiv);
     });
 }
+
+let displayAnswer = async (columnTrue,headerTrue,columnFalse,headerFalse,nextQuestionDiv) => {
+    let sound = undefined;
+    if (questions[questionIdx].answer == true) {
+        sound = new Audio('true.wav');
+    } else {
+        sound = new Audio('false.wav');
+    }
+    await sound.play();
+
+    if (questions[questionIdx].answer == true) {
+        columnTrue.addClass('goodAnswerBackground');
+        headerFalse.addClass('badAnswerHeader');
+    } else {
+        columnFalse.addClass('goodAnswerBackground');
+        headerTrue.addClass('badAnswerHeader');
+    }
+
+    if (questionIdx > 0) {
+        players.forEach((player, name)=> {
+            if (player.answer != questions[questionIdx].answer) {
+                player.div.addClass('badAnswerPlayer');
+            } else {
+                player.score++;
+                if (player.time < 5) {
+                    player.div.addClass('fastAnswerPlayer');
+                    player.score++;
+                }
+            }
+        });    
+    }
+
+    setTimeout(() => {
+
+        if (questionIdx+1>=questions.length) {
+            nextQuestionDiv.text('Classement final...');
+        } else if (questionIdx == 0) {
+            nextQuestionDiv.text('Première question...');
+        } else {
+            nextQuestionDiv.text('Question suivante: n°'+(questionIdx+1)+'...');
+        }
+        
+        let clicked2 = false;
+
+        nextQuestionDiv.click(()=> {
+            if (clicked2) return;
+            clicked2 = true;
+
+            if (questionIdx+1>=questions.length) {
+                finalView();
+            } else {
+                questionView();
+            }
+        });
+    },2000);  
+};
 
 /**
  * Display the "final" view.
@@ -355,7 +367,7 @@ let createCountdown = () => {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-let TIME=30;
+let TIME=5;
 let questions= [
     {label:"(1978 + 8791) / 11 = 979", answer:true},
     {label:"Emmanuel Macron est né en 1978.", answer:false},
